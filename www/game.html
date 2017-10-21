@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="JS/jquery.min.js"></script>
 </head>
 
 <style>
@@ -15,8 +15,8 @@
         height: 17vw;
     }
 
-    .palegreen {
-        background-color: palegreen;
+    .gold {
+        background-color: gold;
     }
 
     h1 {
@@ -47,17 +47,17 @@
                     <img src="./img/heart.png">
                 </td>
                 <td class="noborder">
-                    <text>3</text>
+                    <text id="healthText">3</text>
                 </td>
                 <td class="noborder">
                     <img src="./img/star.jpg">
                 </td>
                 <td class="noborder">
-                    <text>0</text>
+                    <text id="scoreText">0</text>
                 </td>
             </tr>
         </table>
-        <table>
+        <table class="gameBoard">
             <tr>
                 <td id="11"></td>
                 <td id="12"></td>
@@ -98,6 +98,34 @@
 </body>
 
 <script>
+
+    let switchInterval = 1000;
+
+    let health = 3;
+    let score = 0;
+
+    let goldSquareId = "";
+    makeGoldSquare();
+
+    let refreshInterval = setInterval(makeGoldSquare, switchInterval);
+
+   
+
+    $(".gameBoard tr td").click(function() {
+        if(this.id == goldSquareId) {
+            score += 1;
+            $("#scoreText").text(score);
+            clearInterval(refreshInterval);
+            makeGoldSquare();
+            refreshInterval = setInterval(makeGoldSquare, switchInteval);
+        }else{
+            health -= 1;
+            $("#healthText").text(health);
+        }
+        console.log("Vajutatud" + this.id);
+        console.log("score: " + score);
+    });
+
     function getRandomNumber() {
         return Math.floor(Math.random() * 5) + 1;
     }
@@ -108,15 +136,12 @@
         return y + x;
     }
 
-    function makeRedSquare() {
-        $("td").removeClass("palegreen");
+    function makeGoldSquare() {
+        $("td").removeClass("gold");
         let id = getRandomSquare();
-        console.log(id);
-        $("#" + id).addClass("palegreen");
+        goldSquareId = id;
+        $("#" + id).addClass("gold");
     }
-
-
-    setInterval(makeRedSquare, 1500);
 
 
 </script>
